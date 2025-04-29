@@ -1,0 +1,7 @@
+staticfiles/
+
+# Віртуальне оточення Python
+venv/
+env/
+.venv/
+ENV/

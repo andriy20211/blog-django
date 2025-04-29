@@ -1,43 +1,51 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <title>Blog</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-</head>
-<body>
-    <h1>Категорії</h1>
-    
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Останні публікації</h1>
+
+    <!-- Категорії -->
     {% if categories %}
-        {% for item in categories %}
-            <div class="category-item">
-                <a href="{{ item.get_absolute_url }}">
-                    <h2>{{ item.category }}</h2>
-                </a>
-            </div>
-        {% endfor %}
+    <div class="mb-5">
+        <h2 class="h4 mb-3">Категорії</h2>
+        <div class="d-flex flex-wrap gap-2">
+            {% for item in categories %}
+            <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">
+                {{ item.category }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
     {% endif %}
 
-    {% if articles %}
-        <h2>Останні публікації</h2>
+    <!-- Останні статті -->
+    <div class="row">
         {% for item in articles %}
-            <div class="article-item">
-                <a href="{{ item.get_absolute_url }}">
-                    <h3>{{ item.title }}</h3>
-                </a>
-                <time class="article-date">
-                    {{ item.pub_date|date:"j E Y" }}
-                </time>
-                <div class="article-excerpt">
-                    {{ item.description|striptags|truncatewords_html:32 }}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                {% if item.images.first %}
+                <img src="{{ item.images.first.image.url }}" class="card-img-top" alt="{{ item.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title h5">{{ item.title }}</h2>
+                    <time class="text-muted small">{{ item.pub_date|date:"d E Y" }}</time>
+                    <p class="card-text mt-2">{{ item.description|striptags|truncatewords:20 }}</p>
+                    <a href="{{ item.get_absolute_url }}" class="btn btn-sm btn-outline-primary">Читати далі</a>
                 </div>
             </div>
-        {% endfor %}
-    {% endif %}
+        </div>
 
-    <div class="all-articles-link">
-        <a href="{% url 'articles-list' %}">
-            <h3>Всі публікації →</h3>
-        </a>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">Публікації відсутні</div>
+        </div>
+        {% endfor %}
+        <div class="text-center mt-5">
+            <a href="{% url 'articles-list' %}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-book-open mr-2"></i> більше публікацій
+            </a>
+        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

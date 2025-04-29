@@ -1,34 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Публікації</title>
-</head>
-<body>
-    <h1>Публікації</h1>
-    
-    {% if category %}
-        <h2>{{ category }}</h2>
-    {% endif %}
+{% extends "base.html" %}
+{% load static %}
 
-    {% for item in items %}
-        <div class="articles-row">
-            <a href="{{ item.get_absolute_url }}">
-                <h3>{{ item.title }}</h3>
-            </a>
-            <h5>
-                {{ item.pub_date|date:"j E Y"|safe|linebreaks }}
-            </h5>
-            <p>
-                {{ item.description|safe|escape|striptags|truncatewords_html:32 }}
-            </p>
-            {% if item.images.all %}
-                <div class="container-image">
-                    <img class="img" src="{{ item.images.all.0.image.url }}" alt="{{ item.title }}" />
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">{% if category %}{{ category }}{% else %}Всі публікації{% endif %}</h1>
+    
+    <!-- Список статей -->
+    <div class="row">
+        {% for item in items %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                {% if item.images.first %}
+                <img src="{{ item.images.first.image.url }}" class="card-img-top" alt="{{ item.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title h5">{{ item.title }}</h2>
+                    <time class="text-muted small">{{ item.pub_date|date:"d E Y" }}</time>
+                    <p class="card-text mt-2">{{ item.description|striptags|truncatewords:25 }}</p>
+                    <a href="{{ item.get_absolute_url }}" class="btn btn-outline-primary">Читати далі</a>
                 </div>
-            {% endif %}
-            <div class='clearfix'></div>
+            </div>
         </div>
-    {% endfor %}
-</body>
-</html>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">Публікації відсутні</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

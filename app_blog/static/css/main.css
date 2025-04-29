@@ -1,0 +1,47 @@
+/* Загальні стилі */
+body {
+  font-family: 'Ubuntu', sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Картки статей */
+.card {
+  border: none;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Хлібні крихти */
+.breadcrumb {
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+}
+
+/* Контент статті */
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: 0.25rem;
+}
+
+/* Адаптація для малих екранів */
+@media (max-width: 768px) {
+  .card-img-top {
+      height: 150px;
+  }
+  .article-title {
+      font-size: 1.5rem;
+  }
+}
